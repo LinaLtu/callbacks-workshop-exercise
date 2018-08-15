@@ -4,9 +4,9 @@ const displayPosts = () => {
   Posts.getPosts(function(posts) {
     let output = "";
     posts.forEach(post => {
-      output += `<li>${
-        post.title
-      } <button class="delete-button">Delete Item</button></li>`;
+      output += `<li>${post.title} <button class="delete-button" data-id="${
+        post.id
+      }">Delete Item</button></li>`;
     });
     document.getElementById("posts").innerHTML = output;
     addOnClickToDeleteButtons();
@@ -14,13 +14,25 @@ const displayPosts = () => {
 };
 
 const addOnClickToDeleteButtons = () => {
-  const deleteButtons = [...document.getElementsByClassName("delete-button")];
-  deleteButtons.forEach((deleteButton, idx) => {
-    deleteButton.addEventListener("click", () => deletePost(idx));
+  // const deleteButtons = [...document.getElementsByClassName("delete-button")];
+  // deleteButtons.forEach((deleteButton, idx) => {
+  //   deleteButton.addEventListener("click", () => deletePost(idx));
+  // });
+  document.getElementById("posts").addEventListener("click", () => {
+    if (event) {
+      const elem = event.target;
+      console.log(event.target);
+      if (elem.className === "delete-button") {
+        console.log("Hello");
+        let postId = elem.dataset.id;
+        console.log("Data id", postId);
+        Posts.deletePost(postId);
+        displayPosts();
+      }
+    }
   });
+
   console.log("From add on click to delete buttons");
-  console.log(Array.isArray(deleteButtons));
-  console.log(deleteButtons);
 };
 
 const addPost = () => {
@@ -32,10 +44,5 @@ const addPost = () => {
 };
 
 document.getElementById("add-post").addEventListener("click", addPost);
-
-const deletePost = idx => {
-  Posts.deletePost(idx);
-  displayPosts();
-};
 
 displayPosts();

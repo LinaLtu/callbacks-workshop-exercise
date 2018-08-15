@@ -1,6 +1,26 @@
+//event bubbling
+// generating id on backend
+
+const idGenerator = () => {
+  let c = 0;
+  return () => {
+    return c++;
+  };
+};
+
+let generateId = idGenerator();
+
 const posts = [
-  { title: "Post One", body: "This is the content of post one" },
-  { title: "Post Two", body: "This is the content of post two" }
+  {
+    id: generateId(),
+    title: "Post One",
+    body: "This is the content of post one"
+  },
+  {
+    id: generateId(),
+    title: "Post Two",
+    body: "This is the content of post two"
+  }
 ];
 
 const getPosts = callback => {
@@ -11,7 +31,7 @@ const getPosts = callback => {
 
 const setPost = (post, callback) => {
   setTimeout(() => {
-    posts.push(post);
+    posts.push({ ...post, id: generateId() });
     callback(post);
   }, 1000);
 };
