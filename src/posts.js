@@ -1,6 +1,3 @@
-//event bubbling
-// generating id on backend
-
 const idGenerator = () => {
   let c = 0;
   return () => {
@@ -29,6 +26,12 @@ const getPosts = callback => {
   }, 1000);
 };
 
+function getPostsPromise() {
+  return new Promise((resolve) => {
+    getPosts(posts => resolve(posts))
+  });
+}
+
 const setPost = (post, callback) => {
   setTimeout(() => {
     posts.push({ ...post, id: generateId() });
@@ -36,11 +39,19 @@ const setPost = (post, callback) => {
   }, 1000);
 };
 
-const deletePost = postIdx => {
+function setPostPromise(post) {
+  return new Promise((resolve) => {
+    setPost(post, () => {
+      resolve(post);
+    })
+  })
+}
+
+const deletePost = (postIdx, callback) => {
   setTimeout(() => {
     posts.splice(postIdx, 1);
-    return posts;
+    callback(posts);
   }, 1000);
 };
 
-export default { setPost, getPosts, deletePost };
+export default { setPostPromise, getPostsPromise, deletePost };
