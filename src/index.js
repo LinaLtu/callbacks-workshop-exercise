@@ -17,15 +17,11 @@ const addOnClickToDeleteButtons = () => {
       const elem = event.target;
       console.log(event.target);
       if (elem.className === "delete-button") {
-        console.log("Hello");
         let postId = elem.dataset.id;
-        console.log("Data id", postId);
         Posts.deletePost(postId, displayPosts);
       }
     }
   });
-
-  console.log("From add on click to delete buttons");
 };
 
 const addPost = () => {
